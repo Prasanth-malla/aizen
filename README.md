@@ -30,5 +30,5 @@ This project is a web application for securely uploading and managing images, bu
 Local storage was chosen due to billing requirements for cloud providers. I am prepared to adapt to AWS S3 or Firebase if required.
 
 ## Deliverables
-- GitHub Repository: [Link]
+- GitHub Repository: (https://github.com/Prasanth-malla/aizen)
 - Live Deployment: [Local demo or hosted link]
