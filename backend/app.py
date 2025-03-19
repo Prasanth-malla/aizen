@@ -100,6 +100,42 @@ def get_images():
         print(f"Error in /images endpoint: {str(e)}")
         return jsonify({"msg": "Error fetching images", "error": str(e)}), 500
 
+@app.route('/delete/<int:image_id>', methods=['DELETE'])
+@jwt_required()
+def delete_image(image_id):
+    try:
+        user_id = int(get_jwt_identity())
+        image = Image.query.filter_by(id=image_id, user_id=user_id).first()
+        if not image:
+            return jsonify({"msg": "Image not found or not authorized"}), 404
+        
+        # Delete the file from the filesystem
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        
+        # Delete the image record from the database
+        db.session.delete(image)
+        db.session.commit()
+        return jsonify({"msg": "Image deleted"})
+    except Exception as e:
+        print(f"Error in /delete endpoint: {str(e)}")
+        return jsonify({"msg": "Server error", "error": str(e)}), 500
+
+@app.route('/user', methods=['GET'])
+@jwt_required()
+def get_user():
+    try:
+        user_id = int(get_jwt_identity())
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({"msg": "User not found"}), 404
+        return jsonify({"email": user.email})
+    except Exception as e:
+        print(f"Error in /user endpoint: {str(e)}")
+        return jsonify({"msg": "Server error", "error": str(e)}), 500
+
+ 
 @app.route('/images/<filename>')
 def get_image(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
