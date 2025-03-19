@@ -31,4 +31,3 @@ Local storage was chosen due to billing requirements for cloud providers. I am p
 
 ## Deliverables
 - GitHub Repository: (https://github.com/Prasanth-malla/aizen)
-- Live Deployment: [Local demo or hosted link]
